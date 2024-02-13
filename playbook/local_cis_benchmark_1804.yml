@@ -1,0 +1,65 @@
+- name: Harden Ubuntu 1804
+  hosts: 127.0.0.1
+  connection : local
+  become: yes
+  become_method: sudo
+  become_user: root
+  gather_facts: yes
+  module_defaults:
+    apt:
+      force_apt_get: yes
+  pre_tasks:
+    - raw: test -e /usr/bin/python3 || (apt -y update && apt install -y python3-minimal)
+    - raw: apt install -y gnupg aptitude
+    - setup:
+  roles:
+    - roles/cis_benchmark_1804
+  vars:
+    # excluded rules
+    ubuntu1804cis_rule_1_1_6: false
+    ubuntu1804cis_rule_1_1_11: false
+    ubuntu1804cis_rule_1_1_12: false
+    ubuntu1804cis_rule_1_1_13: false
+    ubuntu1804cis_rule_1_1_14: false
+    ubuntu1804cis_rule_1_1_18: false
+    ubuntu1804cis_rule_1_1_19: false
+    ubuntu1804cis_rule_1_1_20: false
+    ubuntu1804cis_rule_1_5_1: false
+    ubuntu1804cis_rule_1_5_2: false
+    ubuntu1804cis_rule_1_5_3: false
+    ubuntu1804cis_rule_1_7_1_3: false
+    ubuntu1804cis_rule_1_7_1_4: false
+    ubuntu1804cis_rule_1_8_1_2: false
+    ubuntu1804cis_rule_1_8_1_3: false
+    ubuntu1804cis_rule_2_2_1_4: false
+    ubuntu1804cis_rule_2_3_4: false
+    ubuntu1804cis_rule_3_4_1: false
+    ubuntu1804cis_rule_3_5_2_2: false
+    ubuntu1804cis_rule_3_5_2_4: false
+    ubuntu1804cis_rule_3_5_2_5: false
+    ubuntu1804cis_rule_3_5_3_5: false
+    ubuntu1804cis_rule_3_5_3_6: false
+    ubuntu1804cis_rule_3_5_4_1_1: false
+    ubuntu1804cis_rule_3_5_4_1_2: false
+    ubuntu1804cis_rule_3_5_4_1_3: false
+    ubuntu1804cis_rule_3_5_4_1_4: false
+    ubuntu1804cis_rule_3_5_4_2_1: false
+    ubuntu1804cis_rule_3_5_4_2_2: false
+    ubuntu1804cis_rule_3_5_4_2_3: false
+    ubuntu1804cis_rule_3_5_4_2_4: false
+    ubuntu1804cis_rule_4_1_2_2: false
+    ubuntu1804cis_rule_4_1_2_3: false
+    
+    # extra param
+    ubuntu1804cis_apply_upgrades: false
+    ubuntu1804cis_ipv6_required: false
+    ubuntu1804cis_telnet_required: true
+    ubuntu1804cis_time_synchronization_servers:
+      - uri: "0.id.pool.ntp.org"
+        config: "minpoll 8"
+      - uri: "1.id.pool.ntp.org"
+        config: "minpoll 8"
+      - uri: "2.id.pool.ntp.org"
+        config: "minpoll 8"
+      - uri: "3.id.pool.ntp.org"
+        config: "minpoll 8"
